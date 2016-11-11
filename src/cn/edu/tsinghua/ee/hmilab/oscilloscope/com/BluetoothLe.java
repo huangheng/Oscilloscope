@@ -3,6 +3,7 @@ package cn.edu.tsinghua.ee.hmilab.oscilloscope.com;
 import java.util.List;
 import java.util.UUID;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -43,14 +44,6 @@ public class BluetoothLe
 		return mBluetoothGatt;
 	}
 	
-    /**
-     * 判断本地设备是否支持蓝牙ble
-     *
-     * @param 无
-     *
-     * @return 支持返回true，否则返回false
-     * 
-     */
 	public boolean isBleSupported()
 	{
 		if(!mContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE))
@@ -59,14 +52,6 @@ public class BluetoothLe
 		return true;
 	}
 	
-    /**
-     * 判断本地蓝牙是否打开
-     *
-     * @param 无
-     *
-     * @return 已打开返回true，否则返回false
-     * 
-     */
 	public boolean isOpened()
 	{
 		if(!mBluetoothAdapter.isEnabled())
@@ -75,14 +60,6 @@ public class BluetoothLe
 		return true;
 	}
 	
-    /**
-     * 设置扫描回调函数
-     *
-     * @param scanCallback 扫描回调函数
-     *
-     * @return 设置成功返回true，否则返回false
-     * 
-     */
 	public boolean setScanCallBack(BluetoothAdapter.LeScanCallback scanCallback)
 	{
 		if(scanCallback == null)
@@ -92,14 +69,8 @@ public class BluetoothLe
 		return true;
 	}
 	
-    /**
-     * 开始扫描
-     *
-     * @param 无
-     *
-     * @return 开始扫描成功返回true，否则返回false
-     * 
-     */
+	@SuppressLint("NewApi")
+	@SuppressWarnings("deprecation")
 	public boolean startLeScan()
 	{
 		if(mScanCallback == null)
@@ -108,14 +79,8 @@ public class BluetoothLe
 		return mBluetoothAdapter.startLeScan(mScanCallback);		
 	}
 	
-    /**
-     * 停止扫描
-     *
-     * @param 无
-     *
-     * @return 停止扫描成功返回true，否则返回false
-     * 
-     */
+	@SuppressLint("NewApi")
+	@SuppressWarnings("deprecation")
 	public boolean stopLeScan()
 	{
 		if(mScanCallback == null)
@@ -126,14 +91,7 @@ public class BluetoothLe
 		return true;
 	}
 	
-    /**
-     * 连接本地蓝牙设备
-     *
-     * @param 无
-     *
-     * @return 连接成功返回true，否则返回false
-     * 
-     */
+	@SuppressLint("NewApi")
 	public boolean connectLocalDevice()
 	{
         if (mBluetoothManager == null) 
@@ -154,15 +112,8 @@ public class BluetoothLe
         return true;
 	}
 	
-    /**
-     * 断开本地蓝牙设备
-     *
-     * @param 无
-     *
-     * @return 断开成功返回true，否则返回false
-     * 
-     */
-    public void disconnectLocalDevice() 
+    @SuppressLint("NewApi")
+	public void disconnectLocalDevice() 
     {
         if (mBluetoothGatt == null) 
         {
@@ -172,16 +123,8 @@ public class BluetoothLe
         mBluetoothGatt = null;
     }
     
-    /**
-     * 连接远端蓝牙设备
-     *
-     * @param address 远端蓝牙mac地址
-     * @param gattCallback 蓝牙数据的回调函数
-     *
-     * @return 连接成功返回true，否则返回false
-     * 
-     */
-    public boolean connectDevice(final String address, BluetoothGattCallback gattCallback) 
+    @SuppressLint("NewApi")
+	public boolean connectDevice(final String address, BluetoothGattCallback gattCallback) 
     {
         if (mBluetoothAdapter == null || address == null) 
         {
@@ -203,15 +146,8 @@ public class BluetoothLe
         return true;
     }
     
-    /**
-     * 断开远端蓝牙设备
-     *
-     * @param 无
-     *
-     * @return 成功
-     * 
-     */
-    public void disconnectDevice() 
+    @SuppressLint("NewApi")
+	public void disconnectDevice() 
     {
         if (mBluetoothAdapter == null || mBluetoothGatt == null) 
         {
@@ -221,15 +157,7 @@ public class BluetoothLe
         Log.d(TAG, "Bluetooth disconnect");
     }
     
-    /**
-     * 读取服务数据，数据在{@code BluetoothGattCallback#onCharacteristicRead(android.bluetooth.BluetoothGatt, android.bluetooth.BluetoothGattCharacteristic, int)}中
-     * 该操作为异步的
-     *	
-     * @param characteristic 服务特征值
-     *
-     * @return 读取请求成功返回true，否则返回false
-     * 
-     */
+    
     public boolean readCharacteristic(BluetoothGattCharacteristic characteristic) 
     {
         if (mBluetoothAdapter == null || mBluetoothGatt == null) 
@@ -239,15 +167,7 @@ public class BluetoothLe
         return mBluetoothGatt.readCharacteristic(characteristic);
     }
     
-    /**
-     * 写服务数据，数据在{@code BluetoothGattCallback#onCharacteristicWrite(android.bluetooth.BluetoothGatt, android.bluetooth.BluetoothGattCharacteristic, int)}中
-     * 该操作为异步的
-     *	
-     * @param characteristic 服务特征值
-     *
-     * @return 写请求成功返回true，否则返回false
-     * 
-     */
+    
     public boolean writeCharacteristic(BluetoothGattCharacteristic characteristic) 
     {
         if (mBluetoothAdapter == null || mBluetoothGatt == null) 
@@ -258,17 +178,9 @@ public class BluetoothLe
         return mBluetoothGatt.writeCharacteristic(characteristic);
     }
 
-    /**
-     * 设置服务通知，数据在{@code BluetoothGattCallback#onDescriptorWrite(BluetoothGatt gatt,BluetoothGattDescriptor descriptor, int status)}中
-     * 该操作为异步的
-     *	
-     * @param characteristic 服务特征值
-     * @param enabled 当为true表示打开通知，否则为关闭通知
-     *
-     * @return 设置通知请求成功返回true，否则返回false
-     * 
-     */
-    public boolean setCharacteristicNotification(BluetoothGattCharacteristic characteristic,boolean enabled) 
+    
+    @SuppressLint("NewApi")
+	public boolean setCharacteristicNotification(BluetoothGattCharacteristic characteristic,boolean enabled) 
     {
         if (mBluetoothAdapter == null || mBluetoothGatt == null) 
         {
@@ -292,15 +204,9 @@ public class BluetoothLe
         return mBluetoothGatt.writeDescriptor(descriptor);
     }
 
-    /**
-     * 获取服务列表
-     *	
-     * @param 无
-     *
-     * @return 服务列表
-     * 
-     */
-    public List<BluetoothGattService> getSupportedGattServices() 
+    
+    @SuppressLint("NewApi")
+	public List<BluetoothGattService> getSupportedGattServices() 
     {
         if (mBluetoothGatt == null) 
         	return null;
